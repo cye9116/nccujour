@@ -2,44 +2,131 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+  <title>MBTI 小遊戲</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>現代風格連結</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      padding: 40px;
     }
 
-    .link-button {
-      padding: 15px 30px;
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .question {
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
       background-color: #2c7be5;
-      color: #fff;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      color: white;
+      transition: background 0.3s ease;
     }
 
-    .link-button:hover {
+    button:hover {
       background-color: #1a68d1;
-      transform: translateY(-2px);
+    }
+
+    .result {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <a href="test.html" class="link-button">前往 Test 頁面</a>
+  <div class="container">
+    <h1>你的 MBTI 是？</h1>
+    <div id="quiz">
+      <!-- 問題將動態插入 -->
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "你更喜歡哪一種聚會方式？",
+        options: [
+          { label: "和一大群人一起熱鬧聚會", value: "E" },
+          { label: "和幾個好友安靜聊天", value: "I" }
+        ]
+      },
+      {
+        text: "你更依賴哪種方式理解世界？",
+        options: [
+          { label: "實際經驗、事實", value: "S" },
+          { label: "直覺、靈感", value: "N" }
+        ]
+      },
+      {
+        text: "你做決定時更偏好？",
+        options: [
+          { label: "理性邏輯分析", value: "T" },
+          { label: "依情感與關係", value: "F" }
+        ]
+      },
+      {
+        text: "你比較喜歡哪種生活方式？",
+        options: [
+          { label: "有計劃、有條理", value: "J" },
+          { label: "隨性、彈性", value: "P" }
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let result = "";
+
+    const quizContainer = document.getElementById("quiz");
+    const resultContainer = document.getElementById("result");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      quizContainer.innerHTML = `
+        <div class="question"><strong>${q.text}</strong></div>
+        <button onclick="choose('${q.options[0].value}')">${q.options[0].label}</button>
+        <button onclick="choose('${q.options[1].value}')">${q.options[1].label}</button>
+      `;
+    }
+
+    function choose(letter) {
+      result += letter;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        quizContainer.innerHTML = "";
+        resultContainer.innerHTML = `你的 MBTI 類型是：<span style="color:#2c7be5">${result}</span>`;
+      }
+    }
+
+    // 初始載入
+    showQuestion();
+  </script>
 </body>
 </html>
